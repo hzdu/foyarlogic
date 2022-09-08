@@ -1,0 +1,9 @@
+.accordion-body {
+    background: #494a5f; /* fallback for old browsers */
+}
+button{
+    width: 100%;
+}
+ul{
+    list-style-type: none;
+}

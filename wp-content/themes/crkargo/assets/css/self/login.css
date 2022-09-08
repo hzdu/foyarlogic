@@ -1,0 +1,13 @@
+.card-body{
+	background:#171717;
+}
+.border {
+    border: 1px solid #505050 !important;
+}
+.form-label {
+    color: #e4e5e6;
+}
+.input-group-text{
+    color: #FFFFFF;
+    border: 1px solid #505050 !important;
+}
