@@ -31,7 +31,7 @@ $(function () {
                         </dl>
                         <dl class="row mt-3">
                             <div class="col">
-                                <span class="text-warning">{19}</span>
+                                <span>{19}</span>
                             </div>
                             <div class="progress_bar">
                                 <div class="pro-bar">
