@@ -7,20 +7,29 @@ $(function () {
         }
     });
 
-    $(".deliverbtn").on("click", function (){
+    $("body").on("click", ".deliverbtn", function (){
+        var isjiesuan;
         var luodifei = $(".inputluodifei").val();
         var inputtoken = $('.inputtoken').val();
         if (isEmpty(inputtoken)) {
-            // Qual.sdb("对不起,签收密码不能为空");
             xtip.msg(ee("对不起,签收密码不能为空"), {times: 4,icon: "e"});
             $(".inputtoken").focus();
             return;
         }
+        switch ($(".caiwu_jiesuan").prop("checked")) {
+            case true:
+                isjiesuan = "1";
+                break;
+            case false:
+                isjiesuan = "0";
+                break;
+        }
         var da = JSON.stringify({
             m: "deliver",
             num: appnum,
-            luodifei: luodifei,
             token: inputtoken,
+            luodifei: luodifei,
+            jiesuan:isjiesuan,
         });
         loading = xtip.load();
         $.ajax({
@@ -29,6 +38,7 @@ $(function () {
             contentType: "application/json;charset=UTF-8",
             data: da,
             success: function (data) {
+                xtip.close(loading);
                 if (data.code!=200){
                     // Qual.sdb(data.msg);
                     xtip.msg(data.msg, {times: 4,icon: "w"});
@@ -46,7 +56,6 @@ $(function () {
                     $(".shishoubaoxianfei").html(data.shishoubaoxianfei);
                     $(".daishou").html(data.daishou);
                 }
-                xtip.close(loading);
             },
         });
 

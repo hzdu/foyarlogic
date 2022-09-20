@@ -30,13 +30,16 @@ $(function () {
                         </script>
                         </dl>
                         <dl class="row mt-3">
+                            <div class="col">
+                                <span class="text-warning">{19}</span>
+                            </div>
                             <div class="progress_bar">
                                 <div class="pro-bar">
                                     <small class="progress_bar_title">
-                                        {19}
-                                    <span class="progress_number">{20}</span>
+                                        {20}
+                                    <span class="progress_number">{21}</span>
                                     </small>
-                                    <span class="progress-bar-inner" style="background-color: #fdba04; width: {21}%;" data-value="{22}" data-percentage-value="{23}"></span>
+                                    <span class="progress-bar-inner" style="background-color: #fdba04; width: {22}%;" data-value="{23}" data-percentage-value="{24}"></span>
                                 </div>
                             </div>
                         </dl>
@@ -48,10 +51,8 @@ $(function () {
 
     $("body").on("click", "#searchtrackinfobtn", function () {
         $("#trackinfo").html("");
-        // var values = $('#tracknumber').val().split('\n');
         var tracknumber = $('#tracknumber').val();
         if (isEmpty(tracknumber)) {
-            // Qual.sdb(ee("对不起,追踪运单不能为空"));
             xtip.msg(ee("对不起,追踪运单不能为空"), {times: 4,icon: "e"});
             return;
         }
@@ -67,15 +68,13 @@ $(function () {
             contentType: "application/json;charset=UTF-8",
             data: da,
             success: function (data) {
+                xtip.closeAll();
                 if (data.code != 200) {
-                    // Qual.sdb(data.msg);
                     xtip.msg(data.msg, {times: 4,icon: "w"});
                 } else {
-                    console.log(data);
-                    xtip.closeAll();
                     var html="";
+
                     $.each(data.trackinfo, function (index, item){
-                        // var title = item.tracknumber+" "+item.goodsnumber+" "+item.updateinfodate;
                         html += String.format(
                             contenthtml,
                             item.tracknumber,
@@ -97,6 +96,7 @@ $(function () {
                             item.dabaofangshi_title,
                             item.dabaofangshi,
                             item.pics,
+                            item.googlemap,
                             item.transtitle,
                             item.nexttranstitle,
                             item.transstatus,
@@ -104,7 +104,6 @@ $(function () {
                             item.transstatus,
                         );
                     })
-                    // console.log(html);
                     $("#trackinfo").html(html);
                 }
             },

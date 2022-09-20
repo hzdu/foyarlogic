@@ -1,6 +1,6 @@
 $(function() {
-	"use strict";
-	new PerfectScrollbar(".header-message-list"), new PerfectScrollbar(".header-notifications-list"), $(".mobile-search-icon").on("click", function() {
+	// "use strict";
+	new $(".mobile-search-icon").on("click", function() {
 		$(".search-bar").addClass("full-search-bar")
 	}), $(".search-close").on("click", function() {
 		$(".search-bar").removeClass("full-search-bar")
@@ -114,7 +114,39 @@ $(function() {
       $('html').attr('class', 'color-sidebar sidebarcolor8');
     }
 	
-	
-	
+	$("body").on("click", ".login_diaolog_btn", function () {
+		var inputusername = $("#login_username").val();
+		var inputpassword = $("#login_password").val();
+		if (isEmpty(inputusername)) {
+			xtip.msg(ee("对不起!用户名不能为空"), {times: 4,icon: "e"});
+			return;
+		}
+		if (isEmpty(inputpassword)) {
+			xtip.msg(ee("对不起!密码不能为空"), {times: 4,icon: "e"});
+			return;
+		}
+
+		var da = JSON.stringify({
+			m: "login",
+			username: inputusername,
+			password: inputpassword,
+		});
+		loading = xtip.load();
+		$.ajax({
+			type: "POST",
+			url: appdomain + "/wp-content/themes/crkargo/api/userapi.php",
+			contentType: "application/json;charset=UTF-8",
+			data: da,
+			success: function (data) {
+				xtip.close(loading);
+				if (data.code != 200) {
+					xtip.msg(ee("登录失败"), {times: 4,icon: "e"});
+					return;
+				} else {
+					window.location.href = "/dashboard";
+				}
+			},
+		});
+	})
 	
 });

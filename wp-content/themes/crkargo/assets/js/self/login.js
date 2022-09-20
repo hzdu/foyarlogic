@@ -5,7 +5,7 @@ $(function () {
     }
   });
 
-  $("#loginbtn").on("click", function () {
+  $("body").on("click", "#loginbtn",function () {
     var inputusername = $("#inputusername").val();
     var inputpassword = $("#inputpassword").val();
     if (isEmpty(inputusername)) {

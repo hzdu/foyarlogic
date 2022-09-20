@@ -48,6 +48,7 @@ $(function () {
             contentType: "application/json;charset=UTF-8",
             data: da,
             success: function (data) {
+                xtip.close(loading);
                 if (data.code != 200) {
                     // Qual.sdb(data.msg);
                     xtip.msg(data.msg, {times: 4,icon: "w"});
@@ -55,7 +56,6 @@ $(function () {
                     // Qual.sdb(data.msg);
                     xtip.msg(data.msg, {times: 4,icon: "s"});
                 }
-                xtip.close(loading);
             },
         });
 

@@ -158,6 +158,18 @@ $(function () {
     }
   })
 
+  $("#inlineCheckbox1").change(function () {
+    xtip.msg(ee("对不起!新建运单的货物出仓功能在核单前无法使用该功能"), {times: 4,icon: "e"});
+  })
+
+  $("#inlineCheckbox2").change(function () {
+    xtip.msg(ee("对不起!新建运单的货物清关转运功能在核单前无法使用该功能"), {times: 4,icon: "e"});
+  })
+
+  $("#inlineCheckbox3").change(function () {
+    xtip.msg(ee("对不起!新建运单的货物抵达功能在核单前无法使用该功能"), {times: 4,icon: "e"});
+  })
+
   $(".sendgoodsbtn").on("click", function () {
     if (seluserid === "null") {
       // Qual.sdb(ee("请选择收件人"));

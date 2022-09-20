@@ -322,11 +322,44 @@ $(function () {
       inlinetransite = "1";
     }
 
+    function checkhedan(){
+      var da = JSON.stringify({
+        m: "checkhedan",
+        id: trackid,
+      });
+      loading = xtip.load();
+      $.ajax({
+        type: "POST",
+        url: appdomain + "wp-content/themes/crkargo/api/goodsapi.php",
+        contentType: "application/json;charset=UTF-8",
+        data: da,
+        success: function (data) {
+          xtip.close(loading);
+          if (data.code != 200) {
+            xtip.msg(ee(data.msg), {times: 4,icon: "e"});
+            return false;
+          } else {
+            return true;
+          }
+        },
+      });
+    }
+
     switch ($("#inlinesendedgoods").prop("checked")) {
       case true:
-        inlinesendedgoods = "1";
+        var hedan = checkhedan();
+        switch (hedan) {
+          case false:
+            $("#inlinesendedgoods").prop("checked", false);
+            break;
+          case true:
+            inlinesendedgoods = "1";
+            $("#inlinesendedgoods").prop("checked", true);
+            break;
+        }
         break;
       case false:
+        $("#inlinesendedgoods").prop("checked", false);
         inlinesendedgoods = "0";
         break;
     }

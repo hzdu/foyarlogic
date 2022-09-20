@@ -1,0 +1,8 @@
+#shoukuan_table td, #gongsixinxi_table td, #gongsixinxi_table th, #footer_table td, #shoujianxinxi_table td{
+    background: #FFFFFF;
+}
+.invoice main .thanks {
+    margin-top: 50px;
+    font-size: 1.5em;
+    margin-bottom: 50px
+}

@@ -30,13 +30,28 @@ $(function () {
             return;
         }
 
-        var da = JSON.stringify({
-            m: "search",
-            id: usernameid,
-            username: username,
-            st: startdate,
-            et: enddate,
-        });
+        switch (orginal) {
+            case 0:
+                var da = JSON.stringify({
+                    m: "search",
+                    id: usernameid,
+                    username: username,
+                    st: startdate,
+                    et: enddate,
+                    orginalid: "null",
+                });
+                break;
+            case 1:
+                var da = JSON.stringify({
+                    m: "search",
+                    id: usernameid,
+                    username: username,
+                    st: startdate,
+                    et: enddate,
+                    orginalid: $("#sel_orginals").val(),
+                });
+                break;
+        }
         loading = xtip.load();
         $.ajax({
             type: "POST",

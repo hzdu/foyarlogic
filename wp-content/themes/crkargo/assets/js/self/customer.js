@@ -9,37 +9,27 @@ $(function () {
     var inputwhatsapp = $("#inputwhatsapp").val();
     var inputtelegram = $("#inputtelegram").val();
     var inputremark = $("#inputremark").val();
-    var inputdollarwallet = $("#inputdollarwallet").val();
-    var inputrublewallet = $("#inputrublewallet").val();
     var inputcustomercode = $("#inputcustomercode").val();
     var baojiachaxunquanxian;
     var userid = $("#sel_suoshuzhanghao").val();
     if (isEmpty(inputcustomercode)) {
-      Qual.sdb("对不起!客户编码不能为空");
+      xtip.msg(ee("对不起!客户编码不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputcustomer)) {
-      Qual.sdb("对不起!客户姓名不能为空");
+      Qual.sdb("对不起!客户姓名不能为空");xtip.msg(ee("对不起!客户编码不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputaddress)) {
-      Qual.sdb("对不起!地址不能为空");
+      xtip.msg(ee("对不起!地址不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputpostcode)) {
-      Qual.sdb("对不起!邮政编码不能为空");
+      xtip.msg(ee("对不起!邮政编码不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputphone)) {
-      Qual.sdb("对不起!电话不能为空");
-      return;
-    }
-    if (parseInt(inputdollarwallet) < 0) {
-      Qual.sdb("对不起,美金钱包余额不能小于0");
-      return;
-    }
-    if (parseInt(inputrublewallet) < 0) {
-      Qual.sdb("对不起,卢布钱包余额不能小于0");
+      xtip.msg(ee("对不起!电话不能为空"), {times: 4,icon: "e"});
       return;
     }
     switch ($("#inputbaojiachaxunquanxian").prop("checked")) {
@@ -63,8 +53,6 @@ $(function () {
       whatsapp: inputwhatsapp,
       telegram: inputtelegram,
       remark: inputremark,
-      dollarwallet: inputdollarwallet,
-      rublewallet: inputrublewallet,
       customercode: inputcustomercode,
       baojiachaxunquanxian: baojiachaxunquanxian,
     });
@@ -75,18 +63,17 @@ $(function () {
       contentType: "application/json;charset=UTF-8",
       data: da,
       success: function (data) {
+        xtip.close(loading);
         if (data.code != 200) {
-          // Qual.sdb(data.msg);
           xtip.msg(data.msg, {times: 4,icon: "e"});
         } else {
           window.location.href = "/customer";
         }
-        xtip.close(loading);
       },
     });
   });
 
-  $(".delaccount").on("click", function () {
+  $("body").on("click", ".delaccount",function () {
     var id = $(this).attr("dataid");
     var da = JSON.stringify({
       m: "delete",
@@ -100,7 +87,6 @@ $(function () {
       data: da,
       success: function (data) {
         if (data.code != 200) {
-          // Qual.sdb(data.msg);
           xtip.msg(data.msg, {times: 4,icon: "e"});
         } else {
           window.location.href = "/customer";
@@ -111,9 +97,10 @@ $(function () {
   });
 
   var editid;
-  $(".editaccount").on("click", function () {
+  $("body").on("click", ".editaccount",function () {
     var id = $(this).attr("dataid");
     editid = id;
+    $("#ed_inp_wallet").val(0);
     var da = JSON.stringify({
       m: "getone",
       id: id,
@@ -125,8 +112,8 @@ $(function () {
       contentType: "application/json;charset=UTF-8",
       data: da,
       success: function (data) {
+        xtip.close(loading);
         if (data.code != 200) {
-          // Qual.sdb(data.msg);
           xtip.msg(data.msg, {times: 4,icon: "e"});
         } else {
           $("#ed_inputcustomer").val(data.customername);
@@ -138,9 +125,7 @@ $(function () {
           $("#ed_inputwhatsapp").val(data.whatsapp);
           $("#ed_inputtelegram").val(data.telegram);
           $("#ed_inputremark").val(data.remark);
-          $("#ed_inputdollarwallet").val(data.dollarwallet);
-          $("#ed_inputrublewallet").val(data.rublewallet);
-          $("#ed_inputcustomercode").val(data.customercode);
+          $("#ed_inp_wallet_yuanzhi").val(data.wallet);
           switch (data.baojiachaxunquanxian) {
             case "0":
               $("#ed_inputbaojiachaxunquanxian").prop("checked", false);
@@ -151,10 +136,47 @@ $(function () {
           }
           $("#ed_sel_suoshuzhanghao").val(data.userid);
         }
-        xtip.close(loading);
       },
     });
   });
+  
+  $("body").on("click", ".wallet",function () {
+    var id = editid;
+    var inp_wallet_yuanzhi = $("#ed_inp_wallet_yuanzhi").val();
+    var inp_wallet = $("#ed_inp_wallet").val();
+    if (parseInt(inp_wallet_yuanzhi) < 0) {
+      xtip.msg(ee("对不起,钱包余额不能小于0"), {times: 4,icon: "e"});
+      return;
+    }
+    if (parseInt(inp_wallet) < 0) {
+      xtip.msg(ee("对不起,新增/减少的数值不能小于0"), {times: 4,icon: "e"});
+      return;
+    }
+    var da = JSON.stringify({
+      m: "savewallet",
+      id: id,
+      cz: $("#ed_caozuofu").val(),
+      wallet_yuanzhi: inp_wallet_yuanzhi,
+      wallet: inp_wallet,
+    });
+    loading = xtip.load();
+    $.ajax({
+        type: "POST",
+        url: appdomain + "wp-content/themes/crkargo/api/customerapi.php",
+        contentType: "application/json;charset=UTF-8",
+        data: da,
+        success: function (data) {
+            xtip.close(loading);
+            if (data.code != 200) {
+              xtip.msg(data.msg, {times: 4,icon: "w"});
+            } else {
+              $("#ed_inp_wallet").val(0);
+              $("#ed_inp_wallet_yuanzhi").val(data.wallet);
+              xtip.msg(data.msg, {times: 4,icon: "s"});
+            }
+        },
+    });
+  })
 
   $(".editcustomeraccount").on("click", function () {
     var id = editid;
@@ -167,37 +189,27 @@ $(function () {
     var inputwhatsapp = $("#ed_inputwhatsapp").val();
     var inputtelegram = $("#ed_inputtelegram").val();
     var inputremark = $("#ed_inputremark").val();
-    var inputdollarwallet = $("#ed_inputdollarwallet").val();
-    var inputrublewallet = $("#ed_inputrublewallet").val();
-    var inputcustomercode = $("#ed_inputcustomercode").val();
+    // var inputcustomercode = $("#ed_inputcustomercode").val();
     var baojiachaxunquanxian;
     var userid = $("#ed_sel_suoshuzhanghao").val();
-    if (isEmpty(inputcustomercode)) {
-      Qual.sdb("对不起!客户编码不能为空");
-      return;
-    }
+    // if (isEmpty(inputcustomercode)) {
+    //   xtip.msg(ee("对不起!客户编码不能为空"), {times: 4,icon: "e"});
+    //   return;
+    // }
     if (isEmpty(inputcustomer)) {
-      Qual.sdb("对不起!客户姓名不能为空");
+      xtip.msg(ee("对不起!客户姓名不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputaddress)) {
-      Qual.sdb("对不起!地址不能为空");
+      xtip.msg(ee("对不起!地址不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputpostcode)) {
-      Qual.sdb("对不起!邮政编码不能为空");
+      xtip.msg(ee("对不起!邮政编码不能为空"), {times: 4,icon: "e"});
       return;
     }
     if (isEmpty(inputphone)) {
-      Qual.sdb("对不起!电话号码不允许为空");
-      return;
-    }
-    if (parseInt(inputdollarwallet) < 0) {
-      Qual.sdb("对不起,美金钱包余额不能小于0");
-      return;
-    }
-    if (parseInt(inputrublewallet) < 0) {
-      Qual.sdb("对不起,卢布钱包余额不能小于0");
+      xtip.msg(ee("对不起!电话号码不允许为空"), {times: 4,icon: "e"});
       return;
     }
     switch ($("#ed_inputbaojiachaxunquanxian").prop("checked")) {
@@ -221,8 +233,6 @@ $(function () {
       whatsapp: inputwhatsapp,
       telegram: inputtelegram,
       remark: inputremark,
-      dollarwallet: inputdollarwallet,
-      rublewallet: inputrublewallet,
       customercode: inputcustomercode,
       baojiachaxunquanxian: baojiachaxunquanxian,
     });
@@ -233,13 +243,12 @@ $(function () {
       contentType: "application/json;charset=UTF-8",
       data: da,
       success: function (data) {
+        xtip.close(loading);
         if (data.code != 200) {
-          // Qual.sdb(data.msg);
           xtip.msg(data.msg, {times: 4,icon: "e"});
         } else {
           window.location.href = "/customer";
         }
-        xtip.close(loading);
       },
     });
   });
