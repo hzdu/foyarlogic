@@ -1,6 +1,6 @@
 $(function () {
     var contenthtml = heredoc(function () {/*
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="{0}">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#track-{1}" aria-expanded="true" aria-controls="track-{2}">
                     {3}
