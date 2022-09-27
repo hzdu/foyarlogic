@@ -42,20 +42,24 @@ function mathRound(num, n) {
 
 /* 使用正则表达式来判断字符串是否全为空 */
 function isEmpty(test) {
-  if (test.match(/^\s+$/)) {
-    return true;
-  }
-  if (test.match(/^[ ]+$/)) {
-    return true;
-  }
-  if (test.match(/^[ ]*$/)) {
-    return true;
-  }
-  if (test.match(/^\s*$/)) {
-    return true;
-  } else {
+    if (test==""||test==null||test==undefined){
+        return true;
+    }
+    // if (test.match(/^\s+$/)) {
+    //     return true;
+    // }
+    // if (test.match(/^[ ]+$/)) {
+    //     return true;
+    // }
+    // if (test.match(/^[ ]*$/)) {
+    //     return true;
+    // }
+    // if (test.match(/^\s*$/)) {
+    //     return true;
+    // } else {
+    //     return false;
+    // }
     return false;
-  }
 }
 
 //保留两位小数 浮点数四舍五入 位数不够 不补0
