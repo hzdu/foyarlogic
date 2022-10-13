@@ -113,40 +113,30 @@ $(function() {
     function theme8() {
       $('html').attr('class', 'color-sidebar sidebarcolor8');
     }
-	
-	$("body").on("click", ".login_diaolog_btn", function () {
-		var inputusername = $("#login_username").val();
-		var inputpassword = $("#login_password").val();
-		if (isEmpty(inputusername)) {
-			xtip.msg(ee("对不起!用户名不能为空"), {times: 4,icon: "e"});
-			return;
-		}
-		if (isEmpty(inputpassword)) {
-			xtip.msg(ee("对不起!密码不能为空"), {times: 4,icon: "e"});
-			return;
-		}
 
+	//--------------保存更新历史开始-----------------------------------------------------
+	$("body").on("click", ".save_history_btn", function(){
 		var da = JSON.stringify({
-			m: "login",
-			username: inputusername,
-			password: inputpassword,
+			m: "savehistory",
+			content: $("#history").val(),
 		});
 		loading = xtip.load();
 		$.ajax({
 			type: "POST",
-			url: appdomain + "/wp-content/themes/crkargo/api/userapi.php",
+			url: appdomain + "wp-content/themes/crkargo/api/.php",
 			contentType: "application/json;charset=UTF-8",
 			data: da,
 			success: function (data) {
 				xtip.close(loading);
 				if (data.code != 200) {
-					xtip.msg(ee("登录失败"), {times: 4,icon: "e"});
-					return;
+					xtip.msg(data.msg, {times: 4,icon: "w"});
 				} else {
-					window.location.href = "/dashboard";
+					//正确返回数据时的操作代码
+
 				}
 			},
 		});
 	})
+	//--------------保存更新历史结束-----------------------------------------------------
 	
 });
