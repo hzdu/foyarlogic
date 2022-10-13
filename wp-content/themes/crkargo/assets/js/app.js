@@ -123,7 +123,7 @@ $(function() {
 		loading = xtip.load();
 		$.ajax({
 			type: "POST",
-			url: appdomain + "wp-content/themes/crkargo/api/.php",
+			url: appdomain + "wp-content/themes/crkargo/api/basicsettingapi.php",
 			contentType: "application/json;charset=UTF-8",
 			data: da,
 			success: function (data) {
