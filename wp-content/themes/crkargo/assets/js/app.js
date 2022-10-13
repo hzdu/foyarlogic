@@ -132,6 +132,7 @@ $(function() {
 					xtip.msg(data.msg, {times: 4,icon: "w"});
 				} else {
 					//正确返回数据时的操作代码
+					$("#history_dialog").modal("hide");
 					xtip.msg(data.msg, {times: 4,icon: "s"});
 				}
 			},
