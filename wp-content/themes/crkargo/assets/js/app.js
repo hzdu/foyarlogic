@@ -119,6 +119,8 @@ $(function() {
 		var da = JSON.stringify({
 			m: "savehistory",
 			content: $("#history").val(),
+			oldver: $(".inp_old_version").val(),
+			newver: $(".inp_new_version").val(),
 		});
 		loading = xtip.load();
 		$.ajax({
